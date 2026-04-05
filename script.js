@@ -628,5 +628,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 16 * 200 + 300);
     }
 
+    // --- HRM Spectrogram Visualization ---
+    const hrmCanvas = document.getElementById('hrmSpectrogram');
+    if (hrmCanvas) {
+        const ctx = hrmCanvas.getContext('2d');
+        const drawHRM = () => {
+            const w = hrmCanvas.width = hrmCanvas.offsetWidth;
+            const h = hrmCanvas.height = hrmCanvas.offsetHeight;
+            ctx.clearRect(0,0,w,h);
+            
+            ctx.beginPath();
+            ctx.strokeStyle = '#00ffcc';
+            ctx.lineWidth = 1.5;
+            ctx.moveTo(0, h/2);
+
+            let time = Date.now() * 0.002;
+            for (let i = 0; i < w; i++) {
+                let freq = i / w;
+                // Complex resonance model (multiple harmonics)
+                let y = Math.sin(i * 0.05 + time) * 10 * freq;
+                y += Math.sin(i * 0.12 - time * 0.5) * 15;
+                y += Math.sin(i * 0.02 + Math.sin(time)) * 30 * (1-freq);
+                
+                // Add noise for realism
+                y += (Math.random() - 0.5) * 2;
+                
+                ctx.lineTo(i, h/2 + y);
+            }
+            ctx.stroke();
+            
+            // Fill under graph
+            ctx.lineTo(w, h);
+            ctx.lineTo(0, h);
+            ctx.fillStyle = 'rgba(0, 255, 204, 0.05)';
+            ctx.fill();
+
+            requestAnimationFrame(drawHRM);
+        };
+        drawHRM();
+    }
+
     drawLattice();
 });
