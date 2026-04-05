@@ -1,0 +1,161 @@
+
+GENESIS BLADE V1.0 — MANUFACTURING TECHNICAL DOCUMENT
+======================================================
+Classification : PRODUCTION READY
+Revision       : V1.0 FINAL
+Date           : 2026-04-05
+
+================================================================================
+SECTION 1: BILL OF MATERIALS (BOM)
+================================================================================
+
+QTY | COMPONENT          | PART NUMBER      | PURPOSE
+----|--------------------|-----------------|---------------------------------
+  1 | ESP32 Module       | ESP32-WROOM-32   | Main MCU (DAC + ADC + WiFi)
+  1 | Multiplexer IC     | CD74HC4067       | 16-Channel Signal Selector
+  1 | Op-Amp IC          | MCP6002          | Dual-Channel Rail-to-Rail Buffer
+  1 | LDO Regulator      | AMS1117-3.3      | Isolated 3.3V Power Rail
+ 16 | Fuse Clip (x2each) | 5x20mm Panel     | Hot-Swappable BCN Core Socket
+  2 | Capacitor          | 10uF Electrolytic| Power Rail Smoothing
+  5 | Capacitor          | 0.1uF Ceramic    | Decoupling (per IC)
+  1 | Inductor/Bead      | 100 Ohm @ 100MHz | LC Filter (WiFi Shield)
+  1 | Pin Header         | 2.54mm Female    | Edge Expansion / Stacking
+  5 | PCB                | JLCPCB / PCBWay  | 10cm x 5cm, 2-layer
+
+================================================================================
+SECTION 2: SIGNAL FLOW DIAGRAM (The River Flow Architecture)
+================================================================================
+
+  [5V USB] --> [AMS1117-3.3] --> [3.3V Rail (VCC)]
+                                       |
+                          +------------+----------+
+                          |            |           |
+                       [ESP32]    [MCP6002]    [CD74HC4067]
+
+
+  *** SIGNAL PATH (Left to Right) ***
+
+  [ESP32 DAC (Pin 25)]
+          |
+          V
+  [MCP6002 Buffer 1 - Voltage Follower]    <-- Isolates DAC from load
+          |
+          +--- LeftPin [Fuse Clip 00] ---+ BCN Core 00 ---+
+          +--- LeftPin [Fuse Clip 01] ---+ BCN Core 01 ---+
+          +--- LeftPin [Fuse Clip 02] ---+ BCN Core 02 ---+
+          ... (x16 TOTAL - all Left Pins connected in parallel) ...
+          +--- LeftPin [Fuse Clip 15] ---+ BCN Core 15 ---+
+                                                          |
+                                          RightPin [Clip 00] -> [CD74HC4067 C0]
+                                          RightPin [Clip 01] -> [CD74HC4067 C1]
+                                          ...
+                                          RightPin [Clip 15] -> [CD74HC4067 C15]
+                                                          |
+                                             [CD74HC4067 SIG Pin]
+                                                          |
+                                    [MCP6002 Buffer 2 - Voltage Follower]
+                                                          |
+                                         [ESP32 ADC (Pin 36 / VP)]
+
+
+================================================================================
+SECTION 3: PIN-TO-PIN WIRING GUIDE (The Master Soldering Map)
+================================================================================
+
+     FROM (Source)              TO (Destination)         NOTE
+     -------------------        ------------------        ----------------------------
+     ESP32 3V3                  MCP6002 Pin 8 (VDD)       Op-Amp Power
+     ESP32 3V3                  CD74HC4067 VCC            Mux Power
+     ESP32 GND                  MCP6002 Pin 4 (GND)       Common Ground - CRUCIAL
+     ESP32 GND                  CD74HC4067 GND            Common Ground - CRUCIAL
+
+     -- INPUT DRIVER --
+     ESP32 Pin 25 (DAC1)        MCP6002 Pin 3 (In+)       DAC to Buffer Input
+     MCP6002 Pin 1 (Out)        MCP6002 Pin 2 (In-)       Wire for Voltage Follower
+     MCP6002 Pin 1 (Out)        ALL Fuse Clips LEFT Pin    Common Signal Bus (x16)
+
+     -- 16-CORE ARRAY (Right Pin of each Clip to Mux) --
+     Fuse Clip 00 RIGHT Pin     CD74HC4067 C0             Core 0
+     Fuse Clip 01 RIGHT Pin     CD74HC4067 C1             Core 1
+     Fuse Clip 02 RIGHT Pin     CD74HC4067 C2             Core 2
+     Fuse Clip 03 RIGHT Pin     CD74HC4067 C3             Core 3
+     Fuse Clip 04 RIGHT Pin     CD74HC4067 C4             Core 4
+     Fuse Clip 05 RIGHT Pin     CD74HC4067 C5             Core 5
+     Fuse Clip 06 RIGHT Pin     CD74HC4067 C6             Core 6
+     Fuse Clip 07 RIGHT Pin     CD74HC4067 C7             Core 7
+     Fuse Clip 08 RIGHT Pin     CD74HC4067 C8             Core 8
+     Fuse Clip 09 RIGHT Pin     CD74HC4067 C9             Core 9
+     Fuse Clip 10 RIGHT Pin     CD74HC4067 C10            Core 10
+     Fuse Clip 11 RIGHT Pin     CD74HC4067 C11            Core 11
+     Fuse Clip 12 RIGHT Pin     CD74HC4067 C12            Core 12
+     Fuse Clip 13 RIGHT Pin     CD74HC4067 C13            Core 13
+     Fuse Clip 14 RIGHT Pin     CD74HC4067 C14            Core 14
+     Fuse Clip 15 RIGHT Pin     CD74HC4067 C15            Core 15
+
+     -- OUTPUT READER --
+     CD74HC4067 SIG             MCP6002 Pin 5 (In+)       Mux to Buffer Input
+     MCP6002 Pin 7 (Out)        MCP6002 Pin 6 (In-)       Wire for Voltage Follower
+     MCP6002 Pin 7 (Out)        ESP32 Pin 36 (VP)         Buffered ADC Read
+
+     -- MUX CONTROL --
+     ESP32 Pin 13               CD74HC4067 S0             Address Bit A
+     ESP32 Pin 12               CD74HC4067 S1             Address Bit B
+     ESP32 Pin 14               CD74HC4067 S2             Address Bit C
+     ESP32 Pin 27               CD74HC4067 S3             Address Bit D
+
+================================================================================
+SECTION 4: PCB BOARD LAYOUT GUIDE ("River Flow" Architecture)
+================================================================================
+
+  +---------------------------------------------------------------------------+
+  | [USB] [LDO]   [ESP32]   [Buffer1]    [CORE ARRAY]     [MUX] [Buffer2]   |
+  |                                                                           |
+  |               +---------+  +-------+  [Clip 00][Clip 08]  +------+      |
+  |   [POWER]    |         |  |       |  [Clip 01][Clip 09]  |      |      |
+  |               | ESP32   |  | Op-   |  [Clip 02][Clip 10]  | 4067 |      |
+  |   + 5V IN     | WROOM   |  | Amp   |  [Clip 03][Clip 11]  |  IC  |      |
+  |   |           |         |  | Drv.  |  [Clip 04][Clip 12]  |      |      |
+  |  AMS1117      |  DAC25->|->|       |  [Clip 05][Clip 13]  |S0-S3 |      |
+  |  (LDO)        |         |  +Bus--->|->ALL CLIPS            |->SIG |      |
+  |   |           |  ADC36 <|<-|  Read |<-[Clip 14][Clip 06]  |      |      |
+  |   +- 3.3V     +---------+  | OpAmp |  [Clip 15][Clip 07]  |      |      |
+  |                             +-------+                       +------+      |
+  |                                                                           |
+  |         ===> AIRFLOW DIRECTION ===> (Cool side to Hot side)              |
+  +---------------------------------------------------------------------------+
+
+  Rules:
+  - Keep Core Array (Clips) ISOLATED from ESP32 signals (no traces underneath)
+  - Use COPPER POUR for full GND plane on both PCB layers
+  - Place 0.1uF decoupling caps as close as possible to each IC VCC pin
+  - Analog GND and Digital GND meet at ONE STAR POINT near LDO
+
+================================================================================
+SECTION 5: STEP-BY-STEP ASSEMBLY ORDER
+================================================================================
+
+  Step 1: Solder AMS1117-3.3 + Capacitors first (Power Stage)
+  Step 2: Solder CD74HC4067 (16-Ch Mux IC)
+  Step 3: Solder MCP6002 (Dual Op-Amp IC)
+  Step 4: Solder ESP32 Module
+  Step 5: Solder all 32 Fuse Clips (16 pairs) — this takes the most time
+  Step 6: Wire Left Pins to Buffer Output Bus (Input Common Rail)
+  Step 7: Wire Right Pins to Mux C0-C15 (Individual channels)
+  Step 8: Wire Mux SIG -> Buffer 2 -> ESP32 VP (ADC)
+  Step 9: Wire control lines S0-S3 -> ESP32 Pins 13,12,14,27
+  Step 10: Flash genesis_self_test.ino -> Verify all 16 cores = [OK]
+  Step 11: Flash genesis_production_blade.ino -> Ready for AI deployment
+
+================================================================================
+SECTION 6: QUICK REFERENCE (COMMAND SET)
+================================================================================
+
+  - V:128       Vectorize at 50% stimulus -> Returns DATA:x,x,x... (16 values)
+  - V:0         Vectorize at 0% stimulus (baseline)
+  - V:255       Vectorize at 100% stimulus (saturation)
+  - CALIBRATE   Pre-heat Lattice for thermal stability
+  - SLEEP       Set DAC to 0, standby mode
+
+================================================================================
+FINAL STATUS: GENESIS BLADE V1.0 — PRODUCTION READY. GOD TIER ASCENSION ACHIEVED.
+================================================================================

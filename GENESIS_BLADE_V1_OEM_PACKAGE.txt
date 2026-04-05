@@ -1,0 +1,168 @@
+================================================================================
+GENESIS BLADE V1.0 — OEM MANUFACTURING PACKAGE
+For Use With: JLCPCB / PCBWay / Local Thai PCB Factory
+Document Type: Complete Factory Submission Kit
+================================================================================
+
+TABLE OF CONTENTS
+-----------------
+  1. PCB Fabrication Specifications
+  2. SMT Assembly Instructions (English — for factory)
+  3. Component Placement Overview
+  4. Test Points & QC Validation
+  5. Packaging & Shipping Requirements
+
+================================================================================
+SECTION 1: PCB FABRICATION SPECIFICATIONS
+================================================================================
+
+  Board Name         : GENESIS Blade V1.0
+  Board Dimensions   : 100mm x 50mm (adjust in Gerber if needed)
+  Shape              : Rectangle
+  Layers             : 2 (Signal Top + Signal Bottom)
+  Material           : FR-4 TG130-140
+  Board Thickness    : 1.6 mm
+  Copper Weight      : 1 oz (35um) on both layers
+  Min Trace/Space    : 0.1mm / 0.1mm (6/6 mil)
+  Min Via Hole Size  : 0.3 mm
+  Surface Finish     : ENIG (Electroless Nickel Immersion Gold)
+  Solder Mask        : MATTE BLACK (both sides)
+  Silkscreen         : White (TOP side only)
+  Gold Fingers       : No
+  Edge Connector     : No
+  Controlled Impedance: No
+  Via-in-Pad         : No
+  Quantity (1st Order): 5 pcs (for prototyping + QC)
+  Quantity (Production): 100 pcs per batch
+
+  DESIGN NOTES:
+  - Full copper pour (GND Plane) on BOTTOM layer required.
+  - Keep Core Array zone (Fuse Clip area) free of signal traces on BOTTOM.
+  - All SMD passives (0402, 0603, 0805) placed on TOP layer.
+  - Fiducial marks (FD1, FD2) required on TOP copper at board corners.
+
+
+================================================================================
+SECTION 2: SMT ASSEMBLY INSTRUCTIONS (English — for factory)
+================================================================================
+
+  Project GENESIS Blade V1.0 — Assembly Instructions:
+
+  2.1 SMT (Surface Mount) Components:
+      - Assemble ALL SMD components on the TOP side.
+      - Reflow profile: Standard SAC305 Lead-free profile.
+      - Leave Fuse Clip positions (FC1–FC32) unpopulated.
+      - Leave Expansion Header J2 unpopulated.
+
+  OPTION A — Full Turnkey (Factory solders everything):
+      - Solder all 32x Through-Hole Fuse Clips in 2 parallel rows.
+      - Align all Fuse Clips perfectly perpendicular to PCB surface.
+      - Ensure clip opening faces UPWARD (accessible from top).
+
+  OPTION B — SMT-Only (Customer solders Fuse Clips manually):
+      - Do NOT solder Fuse Clips (FC1–FC32). Leave holes empty.
+      - Do NOT solder Expansion Header J2. Leave holes empty.
+
+  2.2 Washing & Flux Removal:
+      - Wash board thoroughly after soldering to remove all flux residue.
+      - CRITICAL: Flux contamination causes leakage current in high-impedance
+        analog paths (DAC-to-OpAmp and Mux SIG-to-ADC). This WILL corrupt data.
+      - Recommended: Ultrasonic wash with IPA (Isopropyl Alcohol).
+
+  2.3 Inspection:
+      - No automated functional test required from factory.
+      - X-Ray inspection recommended for ESP32-WROOM BGA pad connection.
+      - Visual inspection for OpAmp (U3) pin-1 orientation marker.
+      - Visual inspection for Mux (U2) pin-1 orientation marker.
+
+
+================================================================================
+SECTION 3: COMPONENT PLACEMENT OVERVIEW
+================================================================================
+
+  Reference the following ASCII layout for general component placement guidance.
+  Exact coordinates are defined in the Gerber/CPL file (BOM.csv).
+
+  +--[FD1]----------------------------------------------------[FD2]--+
+  |                                                                    |
+  | [J1:USB-C]         [ GENESIS BCN CORE ARRAY - 16 PAIRS ]         |
+  |                                                                    |
+  |  [U4:LDO]          [FC00][FC01][FC02][FC03][FC04][FC05][FC06][FC07]|
+  |  [C1][C2]          [FC08][FC09][FC10][FC11][FC12][FC13][FC14][FC15]|
+  |                                                                    |
+  |  [U1:ESP32]        < AIRFLOW DIRECTION (Front to Rear) >          |
+  |                                                                    |
+  |  [U3:OpAmp]                                        [U2:CD74HC4067]|
+  |  [Buffer Stage]                                    [C4][R1][R2]   |
+  |  [C3][C5][C6][C7]                                  [R3][R4][R5]   |
+  |                                                                    |
+  |  [J2:StackHeader]                                                  |
+  +--------------------------------------------------------------------+
+
+  Placement Rules:
+  - U1 (ESP32) goes on LEFT side, near power rails.
+  - U2 (Mux) goes on RIGHT side, near Core Array right edge.
+  - U3 (OpAmp) goes between U1 and Core Array (driver stage).
+  - Core Array (FC00-FC15) occupies the CENTER of the board.
+  - GND Copper Pour fills ALL remaining space on BOTTOM layer.
+  - Analog GND and Digital GND meet ONLY at U4 (LDO) GND pin (Star Point).
+
+
+================================================================================
+SECTION 4: TEST POINTS & QC VALIDATION
+================================================================================
+
+  After board arrival — validate with GENESIS Self-Test Firmware:
+
+  STEP 1: Flash  genesis_self_test.ino  to ESP32 via USB.
+  STEP 2: Open Arduino Serial Monitor at 115200 baud.
+  STEP 3: Observe self-test output. Expected result:
+
+          Core-00: 512/4095  [OK]
+          Core-01: 498/4095  [OK]
+          ...
+          Core-15: 521/4095  [OK]
+          *** BLADE STATUS: [PRODUCTION CERTIFIED] ***
+
+  ACCEPTANCE CRITERIA:
+  - Pass  : All 16 Cores output value in range 100–3950 = [OK]
+  - Reject: Any core below 100 = DEAD / OPEN CIRCUIT — re-inspect clip solder
+  - Reject: Any core above 3950 = SHORT CIRCUIT — inspect Mux channel traces
+
+  ELECTRICAL TEST POINTS (measure with multimeter):
+  - TP_VCC  : 3.3V ± 50mV between U4 OUT and GND
+  - TP_DAC  : Variable 0–3.1V on ESP32 Pin 25 during firmware run
+  - TP_MUX  : 3.3V at U2 VCC pin (Pin 24)
+  - TP_OPAMP: 3.3V at U3 VDD pin (Pin 8)
+
+
+================================================================================
+SECTION 5: PACKAGING & SHIPPING
+================================================================================
+
+  - Each board individually bagged in anti-static bag.
+  - Label each bag: "GENESIS Blade V1.0 — Rev 1"
+  - Include desiccant packet (silica gel) per 10 boards.
+  - Ship in rigid foam-lined box. Do NOT use bubble wrap alone.
+  - ENIG surface is sensitive to fingerprints — wear gloves when handling.
+
+
+================================================================================
+ORDERING GUIDE
+================================================================================
+
+  Recommended Manufacturer: JLCPCB (www.jlcpcb.com)
+
+  Upload: Gerber.zip  (PCB layout — from EasyEDA export)
+  Upload: BOM.csv     (GENESIS_BLADE_V1_BOM.csv — this package)
+  Upload: CPL.csv     (Pick & Place coordinates — from EasyEDA export)
+
+  Select Options to Match Section 1 Specifications above.
+  Estimated Cost (5 pcs, SMT only): ~$15-25 USD + shipping
+  Estimated Lead Time: 7-14 business days
+
+
+================================================================================
+PROJECT GENESIS BLADE V1.0 — OEM PACKAGE CERTIFIED
+STATUS: PRODUCTION READY | GOD TIER ASCENSION COMPLETE
+================================================================================

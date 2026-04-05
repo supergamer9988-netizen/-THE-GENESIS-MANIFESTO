@@ -1,0 +1,22 @@
+Designator,Comment,Footprint,LCSC Part #,Qty,Description,Layer,Rotation
+U1,ESP32-WROOM-32E,ESP32-WROOM-32E,C473012,1,WiFi+BT MCU Module,TOP,0
+U2,CD74HC4067M96,SOP-24_7.5x9mm_P1.27mm,C13833,1,16-Channel Analog Multiplexer,TOP,0
+U3,MCP6002T-I/SN,SOIC-8_3.9x4.9mm_P1.27mm,C7342,1,Dual Rail-to-Rail Op-Amp,TOP,0
+U4,AMS1117-3.3,SOT-223-3_TabPin2,C6186,1,LDO Voltage Regulator 3.3V 800mA,TOP,0
+C1,10uF/16V,C0805,C15850,1,Power Input Bulk Filter Cap,TOP,0
+C2,10uF/16V,C0805,C15850,1,Power Output Bulk Filter Cap,TOP,0
+C3,0.1uF/50V,C0603,C14663,1,ESP32 VCC Decoupling,TOP,0
+C4,0.1uF/50V,C0603,C14663,1,CD74HC4067 VCC Decoupling,TOP,0
+C5,0.1uF/50V,C0603,C14663,1,MCP6002 VCC Decoupling,TOP,0
+C6,0.1uF/50V,C0603,C14663,1,AMS1117 Output Decoupling,TOP,0
+C7,0.1uF/50V,C0603,C14663,1,DAC Output LC-Filter Bypass,TOP,0
+R1,10kΩ/1%,R0603,C25804,1,Mux Enable Pull-up,TOP,0
+R2,10kΩ/1%,R0603,C25804,1,S0 Control Pull-down,TOP,0
+R3,10kΩ/1%,R0603,C25804,1,S1 Control Pull-down,TOP,0
+R4,10kΩ/1%,R0603,C25804,1,S2 Control Pull-down,TOP,0
+R5,10kΩ/1%,R0603,C25804,1,S3 Control Pull-down,TOP,0
+J1,USB-C 16Pin,USB-C-SMD-16P,C165948,1,5V Power Input Connector,TOP,0
+J2,Pin Header 2x10,PinHeader_2x10_P2.54mm,—,1,Expansion Stack Header (THT),TOP,0
+FC1-FC32,Fuse Clip 5x20mm,FuseClip_5x20mm_TH,—,32,BCN Core Hot-Swap Socket (THT),TOP,0
+FD1,Fiducial Mark 1mm,Fiducial_1mm_Cu,—,1,Machine Vision Reference Point A,TOP,0
+FD2,Fiducial Mark 1mm,Fiducial_1mm_Cu,—,1,Machine Vision Reference Point B,TOP,0

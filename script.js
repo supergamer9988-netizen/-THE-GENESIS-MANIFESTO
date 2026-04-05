@@ -333,5 +333,300 @@ document.addEventListener('DOMContentLoaded', () => {
         drawButterfly();
     }
 
+    // --- Hive Mind Cluster Animation ---
+    setInterval(() => {
+        const jitters = document.querySelectorAll('.jitter-v');
+        jitters.forEach(bar => {
+            bar.style.height = (Math.random() * 80 + 10) + '%';
+        });
+
+        const decisionEl = document.querySelector('.decision-indicator');
+        if (decisionEl) {
+            const decisions = ["[1] - STABLE", "[0] - Vetoed", "[1] - Consensus"];
+            decisionEl.textContent = "OUTPUT: " + decisions[Math.floor(Math.random() * decisions.length)];
+        }
+    }, 150);
+
+    // --- Sense AI Animation ---
+    setInterval(() => {
+        const senseEl = document.querySelector('.sense-type');
+        const confFill = document.querySelector('.conf-fill');
+        if (senseEl && confFill) {
+            const states = [
+                { text: "IDLE (NEUTRAL)", conf: "100%" },
+                { text: "💨 BREATH DETECTED", conf: "94%" },
+                { text: "🔨 KINETIC TAP", conf: "98%" }
+            ];
+            const active = states[Math.floor(Math.random() * states.length)];
+            senseEl.textContent = active.text;
+            confFill.style.width = active.conf;
+        }
+    }, 2000);
+
+    // --- Diagnostics Animation ---
+    const rampCanvas = document.getElementById('rampCanvas');
+    if (rampCanvas) {
+        const rCtx = rampCanvas.getContext('2d');
+        let tDiag = 0;
+        setInterval(() => {
+            rCtx.clearRect(0,0,300,150);
+            rCtx.strokeStyle = "#00ff00";
+            rCtx.lineWidth = 2;
+            rCtx.beginPath();
+            for(let x=0; x<300; x++) {
+                // Parabolic curve simulation
+                let normX = x/300;
+                let y = 140 - (Math.pow(normX, 2) * 120) - (Math.sin(normX*10 + tDiag)*5);
+                if(x==0) rCtx.moveTo(x,y); else rCtx.lineTo(x,y);
+            }
+            rCtx.stroke();
+            tDiag += 0.1;
+        }, 50);
+    }
+
+    // --- Eureka Loop Animation ---
+    const loopCanvas = document.getElementById('loopCanvas');
+    if (loopCanvas) {
+        const lCtx = loopCanvas.getContext('2d');
+        let tLoop = 0;
+        setInterval(() => {
+            lCtx.clearRect(0,0,200,200);
+            
+            // Draw Axis
+            lCtx.strokeStyle = "rgba(255,255,255,0.1)";
+            lCtx.beginPath();
+            lCtx.moveTo(20,180); lCtx.lineTo(180,180); // X
+            lCtx.moveTo(20,180); lCtx.lineTo(20,20);   // Y
+            lCtx.stroke();
+
+            // Draw Hysteresis Leaf
+            lCtx.lineWidth = 3;
+            
+            // Path 1 (UP)
+            lCtx.strokeStyle = "#00d1ff";
+            lCtx.beginPath();
+            for(let i=0; i<=100; i++) {
+                let x = 20 + i*1.6;
+                let y = 180 - (Math.pow(i/100, 1.5) * 140);
+                if(i==0) lCtx.moveTo(x,y); else lCtx.lineTo(x,y);
+            }
+            lCtx.stroke();
+
+            // Path 2 (DOWN - The Hysteresis "Gap")
+            lCtx.strokeStyle = "#ffd700";
+            lCtx.beginPath();
+            for(let i=100; i>=0; i--) {
+                let x = 20 + i*1.6;
+                // Offset Y for the loop gap
+                let y = 180 - (Math.pow(i/100, 0.8) * 140) - (Math.sin(tLoop)*5);
+                if(i==100) lCtx.moveTo(x,y); else lCtx.lineTo(x,y);
+            }
+            lCtx.stroke();
+            
+            tLoop += 0.05;
+        }, 50);
+    }
+
+    // --- Prophet Chaos Animation ---
+    const chaosCanvas = document.getElementById('chaosCanvas');
+    if (chaosCanvas) {
+        const cCtx = chaosCanvas.getContext('2d');
+        let tChaos = 0;
+        setInterval(() => {
+            cCtx.clearRect(0,0,300,150);
+            
+            // Actual Reality (Dotted Gold)
+            cCtx.strokeStyle = "rgba(255, 215, 0, 0.4)";
+            cCtx.setLineDash([5, 5]);
+            cCtx.beginPath();
+            for(let x=0; x<300; x++) {
+                let y = 75 + Math.sin(x/10 + tChaos)*20 + Math.sin(x/5 + tChaos)*15;
+                if(x==0) cCtx.moveTo(x,y); else cCtx.lineTo(x,y);
+            }
+            cCtx.stroke();
+
+            // Material Prediction (Solid Cyan)
+            cCtx.strokeStyle = "#00d1ff";
+            cCtx.setLineDash([]);
+            cCtx.beginPath();
+            for(let x=0; x<300; x++) {
+                // Prediction follows actual with slight "material noise"
+                let y = 75 + Math.sin(x/10 + tChaos)*20 + Math.sin(x/5 + tChaos)*15 + (Math.random()-0.5)*2;
+                if(x==0) cCtx.moveTo(x,y); else cCtx.lineTo(x,y);
+            }
+            cCtx.stroke();
+            
+            tChaos += 0.1;
+        }, 60);
+    }
+
+    // --- Poet Typewriter Animation ---
+    const poetDisplay = document.querySelector('.text-output');
+    if (poetDisplay) {
+        const fullText = "hello world... genesis is alive... ai is future...";
+        let charIdx = 0;
+        setInterval(() => {
+            poetDisplay.textContent = fullText.slice(0, charIdx) + "_";
+            charIdx = (charIdx + 1) % (fullText.length + 1);
+            
+            // Pulse context meter
+            const contextFill = document.querySelector('.context-fill');
+            if (contextFill) contextFill.style.width = (80 + Math.sin(Date.now()/200)*8) + "%";
+        }, 150);
+    }
+
+    // --- DB Vector Animation ---
+    setInterval(() => {
+        const vBars = document.querySelectorAll('.v-bar');
+        vBars.forEach(bar => {
+            bar.style.width = (90 + Math.random()*5) + "%";
+        });
+    }, 100);
+
+    // --- FPU Decimal Animation ---
+    const fineDigit = document.querySelector('.fine');
+    if (fineDigit) {
+        setInterval(() => {
+            const rand = Math.floor(10000 + Math.random() * 90000);
+            fineDigit.textContent = rand;
+        }, 120);
+    }
+
+    // --- RNC Math Animation ---
+    const rncCanvas = document.getElementById('rncCanvas');
+    if (rncCanvas) {
+        const rncCtx = rncCanvas.getContext('2d');
+        let tRNC = 0;
+        setInterval(() => {
+            rncCtx.clearRect(0,0,300,150);
+            
+            // Equation: y = 0.5x^2 + sin(5x)
+            rncCtx.setLineDash([]);
+            rncCtx.lineWidth = 1;
+            rncCtx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+            rncCtx.beginPath();
+            for(let x=0; x<300; x++) {
+                let normX = x/300;
+                let y = 100 - (0.5 * Math.pow(normX, 2) * 80 + Math.sin(5 * normX + tRNC) * 40);
+                if(x==0) rncCtx.moveTo(x,y); else rncCtx.lineTo(x,y);
+            }
+            rncCtx.stroke();
+
+            // GENESIS Solution (Red Dotted)
+            rncCtx.setLineDash([3, 3]);
+            rncCtx.lineWidth = 2;
+            rncCtx.strokeStyle = "#ff00ff";
+            rncCtx.beginPath();
+            for(let x=0; x<300; x++) {
+                let normX = x/300;
+                let y = 100 - (0.5 * Math.pow(normX, 2) * 80 + Math.sin(5 * normX + tRNC) * 40) + (Math.random()-0.5)*1.5;
+                if(x==0) rncCtx.moveTo(x,y); else rncCtx.lineTo(x,y);
+            }
+            rncCtx.stroke();
+            
+            tRNC += 0.05;
+        }, 50);
+    }
+
+    // --- Paradigm Shift Animation ---
+    const searchHead = document.querySelector('.search-head');
+    if (searchHead) {
+        // Handled by CSS animation, but we can jitter it
+        setInterval(() => {
+            searchHead.style.opacity = (0.5 + Math.random()*0.5);
+        }, 100);
+    }
+
+    // --- RNS Residue Animation ---
+    const rItems = document.querySelectorAll('.r-item');
+    if (rItems.length > 0) {
+        setInterval(() => {
+            rItems.forEach((item, idx) => {
+                const moduli = [7, 11, 13, 17, 19];
+                item.textContent = "r" + (idx+1) + ": " + Math.floor(Math.random() * moduli[idx]);
+            });
+        }, 120);
+    }
+
+    // --- GAIA Node Jitter ---
+    const nodes = document.querySelectorAll('.node');
+    if (nodes.length > 0) {
+        setInterval(() => {
+            nodes.forEach(node => {
+                node.style.borderColor = Math.random() > 0.8 ? "var(--gold)" : "rgba(255,255,255,0.1)";
+            });
+        }, 150);
+    }
+
+    // --- Blade Scanning Animation ---
+    const bladeNodes = document.querySelectorAll('.c-node');
+    if (bladeNodes.length > 0) {
+        let scanIdx = 0;
+        setInterval(() => {
+            bladeNodes.forEach(node => node.style.background = "rgba(255, 255, 255, 0.03)");
+            bladeNodes[scanIdx].style.background = "rgba(255, 215, 0, 0.3)";
+            scanIdx = (scanIdx + 1) % bladeNodes.length;
+        }, 100);
+    }
+
+    // --- Thermal Tunnel Animation ---
+    const tempVal = document.querySelector('.temp-val');
+    if (tempVal) {
+        setInterval(() => {
+            const temp = (35.15 + Math.random() * 0.1).toFixed(1);
+            tempVal.textContent = temp + "°C [STABILIZED]";
+        }, 1500);
+    }
+
+    // --- Production Checklist Sequence ---
+    const chkItems = document.querySelectorAll('.chk-item');
+    if (chkItems.length > 0) {
+        chkItems.forEach((item, idx) => {
+            setTimeout(() => {
+                item.classList.add('active');
+            }, 500 * idx);
+        });
+    }
+
+    // --- QC Boot Sequence Animation ---
+    const qcGrid = document.getElementById('qcGrid');
+    const certVal = document.getElementById('certVal');
+    if (qcGrid) {
+        // Build 16 core cells dynamically
+        for (let i = 0; i < 16; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'qc-core';
+            cell.id = 'qc-core-' + i;
+            cell.textContent = 'C' + String(i).padStart(2, '0');
+            qcGrid.appendChild(cell);
+        }
+
+        // Sequential scan animation
+        for (let i = 0; i < 16; i++) {
+            (function(idx) {
+                // Mark as scanning
+                setTimeout(() => {
+                    const cell = document.getElementById('qc-core-' + idx);
+                    cell.className = 'qc-core scanning';
+                    cell.textContent = 'C' + String(idx).padStart(2,'0') + '...';
+                }, idx * 200);
+                // Mark as OK
+                setTimeout(() => {
+                    const cell = document.getElementById('qc-core-' + idx);
+                    cell.className = 'qc-core ok';
+                    cell.textContent = 'C' + String(idx).padStart(2,'0') + ' [OK]';
+                }, idx * 200 + 180);
+            })(i);
+        }
+
+        // Final certification badge
+        setTimeout(() => {
+            if (certVal) {
+                certVal.className = 'cert-val certified';
+                certVal.textContent = '✅ PRODUCTION CERTIFIED [16/16]';
+            }
+        }, 16 * 200 + 300);
+    }
+
     drawLattice();
 });

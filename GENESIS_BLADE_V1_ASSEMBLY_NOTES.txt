@@ -1,0 +1,63 @@
+Project GENESIS Blade V1.0 — Assembly Instructions
+
+This document is intended for the PCB contract manufacturer.
+Please read all notes carefully before beginning assembly.
+
+---
+
+1. SMT (Surface Mount Components) — Assemble on TOP side only
+
+   The following components should be placed and reflowed via standard SMT process:
+   - U1: ESP32-WROOM-32E Module
+   - U2: CD74HC4067M96 (SOP-24, 16-Channel Multiplexer)
+   - U3: MCP6002T-I/SN (SOIC-8, Dual Op-Amp Buffer)
+   - U4: AMS1117-3.3 (SOT-223, LDO Regulator)
+   - C1-C7: Capacitors (0805 and 0603 package)
+   - R1-R5: Resistors (0603 package)
+   - J1: USB-C Connector (SMD)
+   - FD1, FD2: Fiducial Marks (copper, no solder)
+
+   Reflow profile: Lead-free SAC305.
+
+2. THT (Through-Hole Components) — Customer decides
+
+   OPTION A (Turnkey — Factory installs clips):
+   - Solder 32x Fuse Clip holders (FC01 to FC32) into through-holes.
+   - 2 parallel rows of 16 clips each.
+   - Clips must be straight and perpendicular to PCB.
+   - Opening of each clip must face upward to allow BCN core insertion.
+
+   OPTION B (SMT-Only — Customer installs clips manually):
+   - Leave FC01–FC32 unpopulated. Leave J2 header unpopulated.
+
+3. Post-Assembly Cleaning (CRITICAL)
+
+   The analog sensing path operates at high impedance.
+   Flux residue on the PCB will cause leakage currents that corrupt
+   the analog signal integrity of this instrument-grade board.
+   Action Required:
+   - Perform thorough flux removal using IPA (Isopropyl Alcohol).
+   - Ultrasonic cleaning bath is strongly preferred.
+   - Allow board to dry completely before shipment.
+
+4. Inspection
+
+   - X-Ray inspection of ESP32 module pad connections is recommended.
+   - Visually verify pin-1 orientation of U2 (Mux) and U3 (Op-Amp).
+   - No functional test is required from the factory.
+   - The purchaser will perform functional QC using included firmware.
+
+5. Packaging
+
+   - Each board in individual anti-static bag.
+   - Include silica gel desiccant packet per 10 boards.
+   - Pack in rigid foam-lined shipping carton.
+
+---
+
+For technical questions, reference:
+GENESIS_BLADE_V1_OEM_PACKAGE.txt (complete specification document)
+GENESIS_BLADE_V1_BOM.csv (bill of materials with LCSC part numbers)
+
+Project: GENESIS Blade V1.0
+Status: OEM Production Ready

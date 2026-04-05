@@ -226,6 +226,609 @@ body {
 }
 
 /* Chaos Key Jitter Visualization */
+/* Hive Mind Cluster UI */
+.cores-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.core-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.6rem;
+    position: relative;
+    height: 80px;
+}
+
+.jitter-v {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, var(--accent), transparent);
+    opacity: 0.3;
+    transition: height 0.1s ease-out;
+}
+
+.hive-decision {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 209, 255, 0.05);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.decision-indicator {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+/* GENESIS Sense UI */
+.sense-display {
+    margin-bottom: 15px;
+}
+
+.sense-type {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+.confidence-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.conf-fill {
+    height: 100%;
+    background: linear-gradient(to right, #7B61FF, var(--accent));
+    transition: width 0.3s ease;
+}
+
+/* GENESIS Diagnostics UI */
+.diag-table {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.diag-row {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-left: 4px solid #333;
+}
+
+.row-success { background: rgba(0, 255, 0, 0.05); color: #00ff00; border-color: #00ff00; }
+.row-warning { background: rgba(255, 215, 0, 0.05); color: #ffd700; border-color: #ffd700; }
+.row-error   { background: rgba(255, 0, 0, 0.05); color: #ff0000; border-color: #ff0000; }
+
+.ramp-viz-box {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* GENESIS Eureka Loop UI */
+.hysteresis-plot {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    filter: drop-shadow(0 0 10px rgba(0, 209, 255, 0.3));
+}
+
+.offset-viz {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.offset-bar {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    margin-top: 5px;
+    background: rgba(255, 215, 0, 0.05);
+}
+
+/* GENESIS Prophet UI */
+.chaos-viz {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.accuracy-meter {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.acc-badge {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #00d1ff;
+    text-shadow: 0 0 10px rgba(0, 209, 255, 0.5);
+    margin-top: 5px;
+}
+
+/* GENESIS Poet UI */
+.gen-monitor {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.text-output {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+    color: #fff;
+    min-height: 1.5em;
+    margin-top: 5px;
+}
+
+.context-meter {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.context-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--gold), #fff);
+    box-shadow: 0 0 10px var(--gold);
+}
+
+/* GENESIS DB UI */
+.vector-compare {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.v-box {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.v-bar {
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 5px;
+    box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+.similarity-score {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.score-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffd700;
+}
+
+/* GENESIS FPU UI */
+.precision-viz {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    font-family: 'Outfit', sans-serif;
+    margin-bottom: 20px;
+}
+
+.p-digit {
+    line-height: 1;
+}
+
+.coarse {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+.fine {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #00d1ff;
+    margin-left: 2px;
+}
+
+.noise-line {
+    height: 2px;
+    background: linear-gradient(to right, transparent, #00d1ff, transparent);
+    margin-top: 10px;
+    animation: noisePulse 1s infinite;
+}
+
+@keyframes noisePulse {
+    0% { opacity: 0.2; transform: scaleX(0.8); }
+    50% { opacity: 1; transform: scaleX(1.2); }
+    100% { opacity: 0.2; transform: scaleX(0.8); }
+}
+
+/* GENESIS RNC UI */
+.solution-viz {
+    background: #000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.neuron-status {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.neuron-badge {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ff00ff;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+    margin-top: 5px;
+}
+
+/* GENESIS Paradigm Shift UI */
+.recall-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.method-box {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.timeline {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.search-head {
+    width: 10px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 0 0 10px #fff;
+    position: absolute;
+    animation: searchScan 2s infinite linear;
+}
+
+@keyframes searchScan {
+    0% { left: 0%; }
+    100% { left: 100%; }
+}
+
+.timeline.analog .recall-pulse {
+    width: 0%;
+    height: 100%;
+    background: var(--gold);
+    box-shadow: 0 0 15px var(--gold);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: recallImpact 1s infinite ease-out;
+}
+
+@keyframes recallImpact {
+    0% { width: 0%; opacity: 1; }
+    50% { width: 100%; opacity: 0.5; }
+    100% { width: 100%; opacity: 0; }
+}
+
+.status-badge {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* GENESIS RNS UI */
+.rns-residues {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.r-item {
+    flex: 1;
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 4px;
+    padding: 10px 5px;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: #00ff41;
+}
+
+.crt-reconstruction {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.re-val {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #00ff41;
+    text-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+}
+
+/* GENESIS GAIA UI */
+.node-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.node {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.node.active {
+    border-color: var(--gold);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    animation: nodePulse 2s infinite alternate;
+}
+
+@keyframes nodePulse {
+    from { background: rgba(255, 215, 0, 0.05); }
+    to { background: rgba(255, 215, 0, 0.2); }
+}
+
+.sharding-status {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.shard-bar {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    margin-top: 5px;
+}
+
+/* GENESIS Blade UI */
+.core-rack {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.c-node {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 8px;
+    text-align: center;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.c-node.active {
+    border-color: #ffd700;
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.05);
+    box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.1);
+    animation: bladePulse 1.5s infinite alternate;
+}
+
+@keyframes bladePulse {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+}
+
+.api-status {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.api-val {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #00d1ff;
+    text-shadow: 0 0 10px rgba(0, 209, 255, 0.5);
+}
+
+/* GENESIS Noise Killer UI */
+.wave-monitor {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.wave {
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.wave.dirty {
+    background: rgba(255, 65, 54, 0.1);
+    color: #ff4136;
+    border: 1px dashed #ff4136;
+    animation: jitter 0.1s infinite;
+}
+
+.wave.clean {
+    background: rgba(46, 204, 64, 0.1);
+    color: #2ecc40;
+    border: 1px solid #2ecc40;
+    box-shadow: 0 0 10px rgba(46, 204, 64, 0.3);
+}
+
+@keyframes jitter {
+    0% { transform: translate(1px, 1px); }
+    50% { transform: translate(-1px, 0px); }
+    100% { transform: translate(0px, -1px); }
+}
+
+.thermal-status {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.temp-val {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* GENESIS Production UI */
+.checklist-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.chk-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.chk-item.active {
+    border-color: #2ecc40;
+    color: #2ecc40;
+    background: rgba(46, 204, 64, 0.05);
+    box-shadow: inset 0 0 10px rgba(46, 204, 64, 0.1);
+}
+
+.manufacturing-status {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.m-val {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #ff851b;
+    text-shadow: 0 0 15px rgba(255, 133, 27, 0.5);
+}
+
+/* GENESIS QC Self-Test UI */
+.qc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.qc-core {
+    padding: 6px 4px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.55rem;
+    font-weight: 800;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.3);
+    transition: all 0.3s ease;
+}
+
+.qc-core.scanning {
+    border-color: #ffd700;
+    color: #ffd700;
+    background: rgba(255,215,0,0.05);
+    animation: scanPulse 0.5s infinite alternate;
+}
+
+.qc-core.ok {
+    border-color: #2ecc40;
+    color: #2ecc40;
+    background: rgba(46, 204, 64, 0.08);
+}
+
+.qc-core.fail {
+    border-color: #ff4136;
+    color: #ff4136;
+    background: rgba(255, 65, 54, 0.08);
+}
+
+@keyframes scanPulse {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+
+.cert-status {
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 12px;
+}
+
+.cert-val {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255,215,0,0.5);
+    margin-top: 5px;
+}
+
+.cert-val.certified {
+    color: #2ecc40;
+    text-shadow: 0 0 15px rgba(46,204,64,0.7);
+}
+
 /* Conclusion & Closing UI */
 #conclusion-module {
     text-align: center;

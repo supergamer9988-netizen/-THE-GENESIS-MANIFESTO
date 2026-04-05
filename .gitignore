@@ -1,0 +1,33 @@
+# 💎 GENESIS GITIGNORE
+# --- PROJECT GENESIS : CHIP-MULTI-CORE-BCN-FJH-Cluster
+
+# Ignore calibration data (per-board credentials)
+calibration.json
+
+# Ignore temporary simulation results
+genesis_benchmark_results.png
+
+# Ignore Python runtime files
+__pycache__/
+*.py[cod]
+*$py.class
+env/
+venv/
+.env
+
+# Ignore temporary artifacts
+*.log
+*.tmp
+/tmp/
+
+# Keep only the essential firmware and industrial docs
+!*.ino
+!*.py
+!*.txt
+!*.doc
+!*.html
+!*.css
+!*.js
+!*.png
+!*.csv
+!*.md
